@@ -1,244 +1,119 @@
-📊 Sales Data Analysis — Exploratory Data Analysis (EDA)
-🧠 Project Overview
+# 📊 Sales Data Analysis — End-to-End EDA & Business Intelligence
 
-This project is part of my Data Analyst portfolio, where I apply end-to-end data analysis techniques using the Superstore Sales dataset.
+> **Business problem:** A retail company is losing profitability despite growing sales volume. This project identifies the root cause and quantifies the financial impact using Python and Power BI.
 
-The goal of this project is to simulate a real-world data analysis workflow, covering data exploration, data quality validation, statistical analysis, visualization, and business insights generation.
+---
 
-🧱 Project Structure
-sales-data-analysis
+## 🎯 Key Business Finding
+
+> A segment of **300 transactions** (only 0.74% of total orders) with **80% discounts** generated **$30,539 in losses** — representing a pricing strategy that actively destroys profitability.  
+> **Recommendation:** Cap maximum discount at 30–40% to protect margins without losing volume.
+
+---
+
+## 📈 Power BI Dashboard
+
+![Sales Overview Dashboard](assets/dashboard.png)
+
+**Dashboard highlights:**
+- **$2.30M** Total Sales | **$286.4K** Total Profit | **12.47%** Profit Margin
+- Technology is the top category by both sales and profit
+- Furniture shows the lowest profit margin — a key area for pricing review
+- West and East regions drive the majority of revenue
+- Sales trend shows consistent growth from 2014 to 2017
+
+---
+
+## 🛠️ Tools & Technologies
+
+| Area | Tools |
+|------|-------|
+| Data Analysis | Python — pandas, numpy |
+| Visualization | matplotlib, seaborn |
+| Business Intelligence | Power BI Desktop |
+| Data Source | Superstore Sales dataset (CSV) |
+| Version Control | Git & GitHub |
+| Environment | Jupyter Notebook (VS Code) |
+
+---
+
+## 🗂️ Project Structure
+
+```
+sales-data-analysis/
 │
+├── assets/
+│   └── dashboard.png          # Power BI dashboard screenshot
 ├── data/
+│   └── Superstore.csv         # Raw dataset
 ├── notebooks/
-├── sql/
-├── dashboard/
-└── README.md
-🛠️ Tools & Technologies
+│   └── sales_eda.ipynb        # Full EDA notebook
+├── .gitignore
+├── README.md
+└── requirements.txt
+```
 
-Python
-pandas
-numpy
-matplotlib
-seaborn
-Jupyter Notebook (VS Code)
-Git & GitHub
+---
 
-📥 Data Loading
+## 🔍 Analysis Workflow
 
-The dataset was loaded using pandas, handling encoding issues:
+### 1. Data Loading & Validation
+- Loaded 9,994 rows × 21 columns with encoding handling (`windows-1252`)
+- **No missing values or duplicate records** found — dataset was clean and analysis-ready
 
-pd.read_csv("../data/Superstore.csv", encoding="windows-1252")
-🔍 Exploratory Data Analysis (EDA)
-1️⃣ Dataset Overview
+### 2. Exploratory Data Analysis (EDA)
 
-Initial exploration included:
+**Categorical findings:**
+- West region leads with 3,203 transactions; South is the smallest market (1,620)
+- Consumer segment represents ~52% of all orders
+- Standard Class shipping dominates — customers prioritize cost over speed
 
-Dataset shape
-Column names
-Data types
-Basic statistics
+**Numerical findings:**
+- Mean sales per transaction: ~$229 | Max: ~$22,638 (highly right-skewed)
+- Mean profit per transaction: ~$28 | Min: ~-$6,599 (significant loss outliers)
+- Discounts reach up to 80%, with measurable negative impact on profit
 
-Key findings:
+### 3. High-Discount Impact Analysis
 
-The dataset contains 9994 rows and 21 columns
+```python
+# Transactions with 80% discount
+high_discount = df[df['Discount'] == 0.8]
 
-Data includes both categorical and numerical variables
+# Result:
+# Transactions:     300
+# % of total:       0.74%
+# Total Sales:      $16,963
+# Total Profit:    -$30,539
+```
 
-2️⃣ Data Types & Structure
+**Insight:** 300 transactions generate $16K in sales but **$30K in losses** — a clear pricing policy issue.
 
-Numerical variables: Sales, Profit, Quantity, Discount
+### 4. Visualization & Dashboard
+- Boxplots and histograms to detect outliers and distribution skew
+- Logarithmic scaling to handle extreme values
+- Power BI dashboard for interactive KPI analysis by category, region, segment, and time
 
-Categorical variables: Category, Region, Segment, Ship Mode, etc.
+---
 
-3️⃣ Missing Values
+## 📌 Summary of Business Insights
 
-No significant missing values were found in the dataset
+| Finding | Impact |
+|---------|--------|
+| High discounts (80%) destroy profit | -$30,539 from 300 transactions |
+| Furniture category underperforms | Lowest profit margin across categories |
+| West & East regions drive most revenue | South is an underserved growth opportunity |
+| Sales growing year-over-year (2014–2017) | Positive trend, but profitability must improve |
 
-4️⃣ Duplicate Check
+---
 
-No fully duplicated rows were found
+## 🚀 Skills Demonstrated
 
-The dataset contains unique records for each transaction
+- End-to-end data analysis pipeline (ETL → EDA → Insights → Dashboard)
+- Identifying actionable business insights from raw data
+- Communicating findings with business-oriented language
+- Building interactive dashboards in Power BI
+- Working with real-world messy datasets
 
-📊 Categorical Variables Analysis
-Tools used:
+---
 
-unique()
-
-nunique()
-
-value_counts()
-
-value_counts(normalize=True)
-
-🪑 Category
-
-Furniture
-
-Office Supplies
-
-Technology
-
-Insight:
-
-The business operates across multiple product types, covering office essentials, furniture, and technology products.
-
-🌎 Region
-
-West: 3203
-
-East: 2848
-
-Central: 2323
-
-South: 1620
-
-Insight:
-
-The West region is the most active market, while the South region shows lower activity levels.
-
-👥 Segment
-
-Consumer: ~52%
-
-Corporate: ~30%
-
-Home Office: ~18%
-
-Insight:
-
-The business depends heavily on individual consumers, as they represent the majority of transactions.
-
-🚚 Ship Mode
-
-Standard Class dominates
-
-Insight:
-
-Customers prefer cost-effective shipping over faster delivery options.
-
-📊 Numerical Variables Analysis
-Variables analyzed:
-
-Sales
-
-Profit
-
-Quantity
-
-Discount
-
-💰 Sales
-
-Mean: ~229
-
-Max: ~22,638
-
-Insight:
-
-Most transactions are low-value, but there are occasional high-value sales.
-
-📉 Profit
-
-Mean: ~28
-
-Min: ~-6599
-
-Max: ~8399
-
-Insight:
-
-There are significant losses in some transactions, indicating potential issues with pricing or discounts.
-
-⚠️ Discount
-
-Maximum discount: 80%
-
-🔥 High Discount Impact Analysis
-
-Further analysis was performed on transactions with 80% discount:
-
-Total Sales: 16,963
-
-Percentage of total sales: 0.74%
-
-Number of transactions: 300
-
-Total Profit: -30,539
-
-Insight:
-
-A very small portion of transactions generates a disproportionately large amount of losses.
-
-This suggests that high discount levels are negatively impacting profitability and may not be a sustainable strategy.
-
-📊 Data Visualization & Outlier Detection
-Techniques used:
-
-Boxplots
-
-Histograms
-
-Logarithmic scaling (plt.xscale('log'))
-
-Data filtering for better visualization
-
-Key Findings
-
-The dataset is highly skewed (right-skewed distribution)
-
-Most values are concentrated at lower ranges
-
-There are significant outliers in both Sales and Profit
-
-📊 Distribution Insights
-
-Most sales are small, with a few very large transactions
-
-Most profits are close to zero
-
-Some transactions generate large losses and large gains
-
-Insight:
-
-The business relies on many small transactions, while a small number of large transactions significantly impact overall performance.
-
-🧠 Key Learnings
-
-Performed full exploratory data analysis (EDA)
-
-Identified data distribution patterns and outliers
-
-Analyzed categorical and numerical variables
-
-Detected business issues related to discount strategies
-
-Applied visualization techniques to better understand data behavior
-
-Transformed raw data into meaningful business insights
-
-🚀 Next Steps
-
-The next phase of the project will focus on business-level analysis, including:
-
-Sales by Category
-
-Sales by Region
-
-Profitability by Segment
-
-Identifying loss-generating products or segments
-
-Building visual insights for dashboards (Power BI)
-
-🎯 Project Outcome
-
-This project demonstrates the ability to:
-
-Work with real-world datasets
-
-Perform structured data analysis
-
-Extract actionable business insights
-
-Communicate findings effectively
+*Dataset: [Superstore Sales (Kaggle)](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)*
